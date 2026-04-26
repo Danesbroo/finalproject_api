@@ -1,4 +1,3 @@
-const { s } = require('framer-motion/client');
 const mongoose = require('mongoose');
 
 const enquirySchema = new mongoose.Schema({
@@ -26,7 +25,7 @@ const enquirySchema = new mongoose.Schema({
     },
     subject: {
         type: String,
-        required: [ "Subject is Required" ],
+        required: [true, "Subject is Required" ],
         match: [/^[a-zA-Z ]{5,30}$/, 'Please use 5-30 letters only'],
         default: '',
          
