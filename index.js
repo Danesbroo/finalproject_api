@@ -164,7 +164,7 @@ require('./Src/routes/website/orders_routes.js')(server);
 
 // DB connect
 const PORT = process.env.PORT || 4000;
-
+console.log("DB URI:", process.env.DB);
 mongoose.connect(process.env.DB)
   .then(() => {
     console.log('Database connected');

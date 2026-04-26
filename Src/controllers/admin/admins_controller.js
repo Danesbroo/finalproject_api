@@ -5,7 +5,6 @@ var bcrypt = require('bcrypt'); //bcrypt use to encript password
 var saltRounds = 5;// here saltround meaning making password more complex and create 10 times complex password
 
 const nodemailer = require("nodemailer");// nodemailer use to send email
-const { address } = require('framer-motion/client');
 
 // register API
 exports.register = async (req, res) => {
