@@ -11,7 +11,7 @@ const { request } = require('express');
 // register API
 exports.register = async (req, res) => {
 
-    var isExistUser = await webUserModel.findOne({ email: req.body.email, delete_at: '', role_type: 'User' });
+    var isExistUser = await webUserModel.findOne({ email: req.body.email, delete_at: null, role_type: 'User' });
     if (isExistUser) {
         return res.send({
             _status: false,
@@ -118,7 +118,7 @@ exports.login = async (req, res) => {
         const user = await webUserModel.findOne({
             email: req.body.email,
             delete_at: null,      // null preferable over ''
-            role_type: 'User'
+            // role_type: 'User'
         }).select('+password');   //important if password is select: false in schema
 
         // 2. If user not found

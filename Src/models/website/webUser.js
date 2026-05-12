@@ -5,13 +5,14 @@ const webUserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'First Name is Required'],
     },
-    mname: {
-        type: String,
-        default: ''
-    },
+   
     lname: {
         type: String,
         required: [true, 'Last Name is Required'],
+    },
+    role_type:{
+        type: String,
+        enum: ['Admin', 'User']
     },
     image: {
         type: String,

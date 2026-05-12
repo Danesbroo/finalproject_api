@@ -98,11 +98,11 @@ exports.login = async (req, res) => {
         _data: user
     });
 };
-
 // view profile
 exports.viewProfile = async (req, res) => {
     // first we get token from header
     var token = req.headers.authorization; // we get token from header
+    console.log(token);
     if (!token) { // if token is not present in header
         return res.send({
             _status: false,
@@ -111,7 +111,6 @@ exports.viewProfile = async (req, res) => {
         })   
     } 
     var token = token.split(' ')[1]; // we split token from 'space ' because we need token only not Bearer which is comes incorporate with token value
-
     try {
         var decoded = jwt.verify(token, process.env.KEY); // here we verify token is valid or not
         console.log(decoded);
@@ -184,7 +183,6 @@ exports.updateProfile = async (req, res) => {
         });
     }
 }
-
 // change password
 exports.changePassword = async (req, res) => {
     var token = req.headers.authorization; // we get token from header

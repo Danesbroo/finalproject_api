@@ -39,7 +39,7 @@ exports.view = async (request, response) => {
             if (result.length > 0) {
                 response.send({
                     _status: true,
-                    _message: 'Color view successfully',
+                    _message: 'User view successfully',
                     _pagination: {
                         current_page: currentPage,
                         total_page: totalPage,
