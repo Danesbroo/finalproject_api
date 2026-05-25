@@ -188,53 +188,6 @@ exports.viewProfile = async (req, res) => {
 };
 
 // update profile
-// exports.updateProfile = async (req, res) => {
-//     var token = req.headers.authorization; // we get token from header
-//     if (!token) { // if token is not present in header
-//         return res.send({
-//             _status: false,
-//             _message: 'Token is required',
-//             _data: null
-//         })   
-//     } 
-//     var token = token.split(' ')[1]; // we split token from 'space ' because we need token only not Bearer which is comes incorporate with token value
-
-//     try {
-//         var decoded = jwt.verify(token, process.env.KEY); // here we verify token is valid or not
-        
-//         var userData = await adminModel.findById({_id: decoded.userData._id, role_type : "Admin"});// here we find user by id and check delete_at is empty
-//         if (!userData) { // if user not found
-//             return res.send({
-//                 _status: false,
-//                 _message: 'User not found',
-//                 _data: null
-//             });
-//         }
-//         const updateData = req.body;
-//         if (req.file && req.file.filename) { // Check if a new image file is uploaded
-//             updateData.image = req.file.filename; // Add image filename to updateData if a new image is uploaded
-//         }
-//          var userData = await adminModel.findByIdAndUpdate({ 
-//             _id: decoded.userData._id 
-//         },{ 
-//             $set: updateData
-//         }); 
-//          const output = {
-//             _status: true,
-//             _message: 'Profile updated successfully',
-//             _data: userData,
-//             _image_path: process.env.ADMIN_IMAGE
-//         }
-//         res.send(output);
-//     }
-//     catch (error) {
-//         return res.send({
-//             _status: false,
-//             _message: 'Invalid token',
-//             _data: null
-//         });
-//     }
-// }
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -289,71 +242,153 @@ exports.updateProfile = async (req, res) => {
 };
 
 // change password
+// exports.changePassword = async (req, res) => {
+//     var token = req.headers.authorization; // we get token from header
+//     if (!token) { // if token is not present in header
+//         return res.send({
+//             _status: false,
+//             _message: 'Token is required',
+//             _data: null
+//         })   
+//     } 
+//     var token = token.split(' ')[1]; //it split token from blank space and make array. because we need token only not Bearer which is comes incorporate with token value
+//     console.log(token);
+//     try {
+//         var decoded = jwt.verify(token, process.env.KEY); // here we verify token is valid or not
+//         console.log(decoded);
+//         var userData = await adminModel.findOne({_id: decoded.userId, role_type : "Admin"}); // here we find user by id and check delete_at is empty
+//         if (!userData) { // if user not found
+//             return res.send({
+//                 _status: false,
+//                 _message: 'User not found',
+//                 _data: null
+//             });
+//         }
+//         let verifyPassword = await bcrypt.compare(req.body.current_password, userData.password);
+//         if(!verifyPassword){
+//             return res.send({
+//                 _status: false,
+//                 _message: 'Current password is incorrect',
+//                 _data: null
+//             });
+//         }
+//         if(req.body.current_password === req.body.new_password){
+//             return res.send({
+//                 _status: false,
+//                 _message: 'Current password and new password cannot be the same',
+//                 _data: null
+//             });
+//         }
+//         if(req.body.new_password != req.body.confirm_password){
+//             return res.send({
+//                 _status: false,
+//                 _message: 'New password and confirm password do not match',
+//                 _data: null
+//             });
+//         }
+        
+//          var password = await bcrypt.hash(req.body.new_password, saltRounds);
+//          var userData = await adminModel.updateOne({ 
+//             _id: decoded.userData._id 
+//         },{ 
+//             $set: { password: password }
+//         }); 
+//          const output = {
+//             _status: true,
+//             _message: 'Password Changed  successfully',
+//             _data: userData
+//         }
+//         res.send(output);
+//     }
+//     catch (error) {
+//         return res.send({
+//             _status: false,
+//             _message: error.message,
+//             _data: null
+//         });
+//     }
+// }
 exports.changePassword = async (req, res) => {
-    var token = req.headers.authorization; // we get token from header
-    if (!token) { // if token is not present in header
-        return res.send({
-            _status: false,
-            _message: 'Token is required',
-            _data: null
-        })   
-    } 
-    var token = token.split(' ')[1]; //it split token from blank space and make array. because we need token only not Bearer which is comes incorporate with token value
-    try {
-        var decoded = jwt.verify(token, process.env.KEY); // here we verify token is valid or not
-        
-        var userData = await adminModel.findOne({_id: decoded.userData._id, role_type : "Admin"}); // here we find user by id and check delete_at is empty
-        if (!userData) { // if user not found
-            return res.send({
-                _status: false,
-                _message: 'User not found',
-                _data: null
-            });
-        }
-        let verifyPassword = await bcrypt.compare(req.body.current_password, userData.password);
-        if(!verifyPassword){
-            return res.send({
-                _status: false,
-                _message: 'Current password is incorrect',
-                _data: null
-            });
-        }
-        if(req.body.current_password === req.body.new_password){
-            return res.send({
-                _status: false,
-                _message: 'Current password and new password cannot be the same',
-                _data: null
-            });
-        }
-        if(req.body.new_password != req.body.confirm_password){
-            return res.send({
-                _status: false,
-                _message: 'New password and confirm password do not match',
-                _data: null
-            });
-        }
-        
-         var password = await bcrypt.hash(req.body.new_password, saltRounds);
-         var userData = await adminModel.updateOne({ 
-            _id: decoded.userData._id 
-        },{ 
-            $set: { password: password }
-        }); 
-         const output = {
-            _status: true,
-            _message: 'Password Changed  successfully',
-            _data: userData
-        }
-        res.send(output);
-    }
-    catch (error) {
-        return res.send({
-            _status: false,
-            _message: 'Invalid token',
-            _data: null
-        });
-    }
-}
+  try {
+      const token = req.headers.authorization;
+
+      if (!token) {
+          return res.send({
+              _status: false,
+              _message: 'Token is required',
+              _data: null
+          });
+      }
+
+      const pureToken = token.split(' ')[1];
+
+      const decoded = jwt.verify(pureToken, process.env.KEY);
+
+      //FIXED: use userId
+      const userData = await adminModel.findOne({
+          _id: decoded.userId,
+          role_type: "Admin"
+      }).select("+password");
+
+      if (!userData) {
+          return res.send({
+              _status: false,
+              _message: 'User not found',
+              _data: null
+          });
+      }
+
+      const verifyPassword = await bcrypt.compare(
+          req.body.current_password,
+          userData.password
+      );
+
+      if (!verifyPassword) {
+          return res.send({
+              _status: false,
+              _message: 'Current password is incorrect',
+              _data: null
+          });
+      }
+
+      if (req.body.current_password === req.body.new_password) {
+          return res.send({
+              _status: false,
+              _message: 'Current password and new password cannot be the same',
+              _data: null
+          });
+      }
+
+      if (req.body.new_password !== req.body.confirm_password) {
+          return res.send({
+              _status: false,
+              _message: 'New password and confirm password do not match',
+              _data: null
+          });
+      }
+
+      const hashedPassword = await bcrypt.hash(req.body.new_password, 10);
+
+      await adminModel.updateOne(
+          { _id: decoded.userId },
+          { $set: { password: hashedPassword } }
+      );
+
+      return res.send({
+          _status: true,
+          _message: 'Password changed successfully',
+          _data: null
+      });
+
+  } catch (error) {
+      console.log(error);
+      return res.send({
+          _status: false,
+          _message: error.message,
+          _data: null
+      });
+  }
+};
 
 // forget password
 exports.forgetPassword = async (req, res) => {

@@ -61,13 +61,13 @@ exports.view = async (request, response) => {
 
 //  Record Deleteted
 exports.decompose = async (request, response) => {
-    await orderModel.updateMany({
+    await orderModel.updateOne({
         _id: {
             $in: request.body._id
         }
     }, {
         $set: {
-            delete_at: Date.now() 
+            delete_at: Date.now()
         }
     })
         .then((result) => {

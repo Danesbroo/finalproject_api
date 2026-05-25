@@ -193,11 +193,11 @@ exports.changePassword = async (req, res) => {
             _data: null
         })   
     } 
+    console.log(token);
     var token = token.split(' ')[1]; //it split token from blank space and make array. because we need token only not Bearer which is comes incorporate with token value
-
     try {
         var decoded = jwt.verify(token, process.env.KEY); // here we verify token is valid or not
-        
+        console.log(decoded);
         var userData = await userModel.findById(decoded.userData._id); // here we find user by id and check delete_at is empty
         if (!userData) { // if user not found
             return res.send({
